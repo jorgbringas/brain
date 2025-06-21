@@ -28,16 +28,15 @@ def list_markdown_files(directory='Content', base_path=''):
             full_path = os.path.join(directory, item_path)
             
             if os.path.isdir(full_path):
-                # Include all directories except those that end with '_files'
-                if not item.endswith('_files'):
-                    children = list_markdown_files(directory, item_path)
-                    # Include directory even if empty
-                    files.append({
-                        'name': ' '.join(word.capitalize() for word in item.replace('_', ' ').replace('-', ' ').split()),
-                        'path': item_path.replace('\\', '/'),  # Use forward slashes for web
-                        'type': 'directory',
-                        'children': children
-                    })
+                # Include all directories, including those that end with '_files'
+                children = list_markdown_files(directory, item_path)
+                # Include directory even if empty
+                files.append({
+                    'name': ' '.join(word.capitalize() for word in item.replace('_', ' ').replace('-', ' ').split()),
+                    'path': item_path.replace('\\', '/'),  # Use forward slashes for web
+                    'type': 'directory',
+                    'children': children
+                })
             elif item.lower().endswith('.md'):
                 files.append({
                     'name': ' '.join(word.capitalize() for word in os.path.splitext(item)[0].replace('_', ' ').replace('-', ' ').split()),

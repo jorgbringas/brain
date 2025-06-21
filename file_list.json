@@ -42,6 +42,77 @@
     ]
   },
   {
+    "name": "1 Fundamentals Files",
+    "path": "1_Fundamentals_files",
+    "type": "directory",
+    "children": [
+      {
+        "name": "Gear Checklist",
+        "path": "1_Fundamentals_files/gear_checklist.md",
+        "type": "file"
+      },
+      {
+        "name": "Interleaving",
+        "path": "1_Fundamentals_files/interleaving.md",
+        "type": "file"
+      },
+      {
+        "name": "Marginal Gains Track",
+        "path": "1_Fundamentals_files/marginal_gains_track.md",
+        "type": "file"
+      }
+    ]
+  },
+  {
+    "name": "3 Briefing Files",
+    "path": "3_Briefing_files",
+    "type": "directory",
+    "children": [
+      {
+        "name": "Kolb Cycle Example",
+        "path": "3_Briefing_files/kolb_cycle_example.md",
+        "type": "file"
+      },
+      {
+        "name": "Kolbs Experiential Cycle Worksheet",
+        "path": "3_Briefing_files/Kolbs-Experiential-Cycle-Worksheet.md",
+        "type": "file"
+      },
+      {
+        "name": "Learning Contract Sheet",
+        "path": "3_Briefing_files/learning_contract_sheet.md",
+        "type": "file"
+      },
+      {
+        "name": "Schedule Variation",
+        "path": "3_Briefing_files/Schedule-Variation.md",
+        "type": "file"
+      },
+      {
+        "name": "Schedule Blueprint",
+        "path": "3_Briefing_files/Schedule_blueprint.md",
+        "type": "file"
+      }
+    ]
+  },
+  {
+    "name": "4 Technique Training Files",
+    "path": "4_Technique-Training_files",
+    "type": "directory",
+    "children": [
+      {
+        "name": "Problem Solving Worksheet Maths",
+        "path": "4_Technique-Training_files/Problem-Solving-Worksheet-Maths.md",
+        "type": "file"
+      },
+      {
+        "name": "Scheduling Checklist",
+        "path": "4_Technique-Training_files/Scheduling-checklist.md",
+        "type": "file"
+      }
+    ]
+  },
+  {
     "name": "Curriculum",
     "path": "Curriculum",
     "type": "directory",

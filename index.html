@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Dump</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --background-color: #f9f9f9;
+            --border-color: #eee;
+            --text-color: #333;
+            --code-bg: #f5f5f5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            background: white;
+            border-right: 1px solid var(--border-color);
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        header {
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .search {
+            width: 100%;
+            padding: 8px 12px;
+            margin: 10px 0;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        /* File tree */
+        .file-tree {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .file-tree li {
+            margin: 5px 0;
+            position: relative;
+        }
+
+        .file-tree a {
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .file-tree a:hover, .file-tree a.active {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--secondary-color);
+        }
+
+        .file-tree .directory > .name {
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .file-tree .directory > .name:before {
+            content: '▶';
+            font-size: 10px;
+            margin-right: 5px;
+            transition: transform 0.2s;
+        }
+
+        .file-tree .directory.expanded > .name:before {
+            transform: rotate(90deg);
+        }
+
+        .file-tree .children {
+            list-style: none;
+            padding-left: 20px;
+            display: none;
+        }
+
+        .file-tree .directory.expanded > .children {
+            display: block;
+        }
+
+        /* Main content */
+        .main-content {
+            flex: 1;
+            margin-left: 300px;
+            padding: 30px;
+            max-width: 900px;
+        }
+
+        /* Markdown content */
+        .markdown-body {
+            background: white;
+            padding: 30px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3,
+        .markdown-body h4,
+        .markdown-body h5,
+        .markdown-body h6 {
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+            color: var(--primary-color);
+        }
+
+        .markdown-body h1 { font-size: 2em; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3em; }
+        .markdown-body h2 { font-size: 1.5em; border-bottom: 1px solid var(--border-color); padding-bottom: 0.3em; }
+        .markdown-body h3 { font-size: 1.25em; }
+        .markdown-body h4 { font-size: 1em; }
+        .markdown-body h5 { font-size: 0.875em; }
+        .markdown-body h6 { font-size: 0.85em; color: #6a737d; }
+
+        .markdown-body p {
+            margin: 16px 0;
+            line-height: 1.7;
+        }
+
+        .markdown-body a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+
+        .markdown-body a:hover {
+            text-decoration: underline;
+        }
+
+        .markdown-body code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            background-color: rgba(27, 31, 35, 0.05);
+            border-radius: 3px;
+            font-size: 85%;
+            margin: 0;
+            padding: 0.2em 0.4em;
+        }
+
+        .markdown-body pre {
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            font-size: 85%;
+            line-height: 1.45;
+            overflow: auto;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .markdown-body pre code {
+            background-color: transparent;
+            padding: 0;
+            margin: 0;
+            font-size: 100%;
+            word-break: normal;
+            white-space: pre;
+            border: 0;
+        }
+
+        .markdown-body blockquote {
+            border-left: 0.25em solid #dfe2e5;
+            color: #6a737d;
+            padding: 0 1em;
+            margin: 0 0 16px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+                max-height: 40vh;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <header>
+            <h1>Brain Dump</h1>
+            <p>Knowledge Base</p>
+        </header>
+        <input type="text" class="search" placeholder="Search..." id="searchInput">
+        <ul class="file-tree" id="fileTree">
+            <!-- Files will be loaded here by JavaScript -->
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div id="content" class="markdown-body">
+            <h1>Welcome to Brain Dump</h1>
+            <p>Select a file from the sidebar to view its contents.</p>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let files = [];
+        let currentFile = null;
+
+        // DOM Elements
+        const fileTree = document.getElementById('fileTree');
+        const contentDiv = document.getElementById('content');
+        const searchInput = document.getElementById('searchInput');
+
+        // Toggle directory
+        function toggleDirectory(e) {
+            e.stopPropagation();
+            const li = e.target.closest('li');
+            if (li) {
+                li.classList.toggle('expanded');
+            }
+        }
+
+        // Render file tree
+        function renderFileTree(items, parent = fileTree) {
+            parent.innerHTML = '';
+            
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.className = item.type;
+                
+                if (item.type === 'directory') {
+                    li.innerHTML = `
+                        <div class="name">
+                            <span>${item.name}</span>
+                        </div>
+                        <ul class="children"></ul>
+                    `;
+                    
+                    const nameEl = li.querySelector('.name');
+                    nameEl.addEventListener('click', toggleDirectory);
+                    
+                    if (item.children && item.children.length > 0) {
+                        renderFileTree(item.children, li.querySelector('.children'));
+                    }
+                } else {
+                    li.innerHTML = `<a href="#" data-path="${encodeURIComponent(item.path)}">${item.name}</a>`;
+                    li.querySelector('a').addEventListener('click', (e) => {
+                        e.preventDefault();
+                        loadMarkdownFile(item.path);
+                    });
+                }
+                
+                parent.appendChild(li);
+            });
+        }
+
+        // Load markdown file
+        async function loadMarkdownFile(filePath) {
+            try {
+                currentFile = filePath;
+                const response = await fetch(`/Content/${filePath}`);
+                if (!response.ok) throw new Error('File not found');
+                
+                const markdown = await response.text();
+                const html = await markdownToHtml(markdown);
+                
+                contentDiv.innerHTML = html;
+                updateActiveFile(filePath);
+                
+                // Update URL
+                history.pushState({ filePath }, '', `?file=${encodeURIComponent(filePath)}`);
+                
+            } catch (error) {
+                console.error('Error loading file:', error);
+                contentDiv.innerHTML = `
+                    <h1>Error</h1>
+                    <p>Could not load the requested file: ${error.message}</p>
+                `;
+            }
+        }
+
+        // Convert markdown to HTML
+        async function markdownToHtml(markdown) {
+            // Simple markdown to HTML conversion
+            let html = markdown
+                // Headers
+                .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+                .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+                .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+                .replace(/^#### (.*$)/gm, '<h4>$1</h4>')
+                .replace(/^##### (.*$)/gm, '<h5>$1</h5>')
+                .replace(/^###### (.*$)/gm, '<h6>$1</h6>')
+                // Bold and italic
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                // Code blocks
+                .replace(/```([^\n]*)\n([\s\S]*?)\n```/g, '<pre><code class="$1">$2</code></pre>')
+                // Inline code
+                .replace(/`([^`]+)`/g, '<code>$1</code>')
+                // Links
+                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+                // Images
+                .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%;">')
+                // Blockquotes
+                .replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>')
+                // Horizontal rule
+                .replace(/^---$/gm, '<hr>')
+                // Lists
+                .replace(/^\* (.*$)/gm, '<li>$1</li>')
+                .replace(/^\d+\. (.*$)/gm, '<li>$1</li>')
+                // Paragraphs (handle line breaks properly)
+                .replace(/^([^<\n][^\n]*(\n(?!\n)[^<\n]*)*)/gm, function(m) {
+                    return m.trim() ? '<p>' + m.trim() + '</p>' : '';
+                });
+
+            // Fix nested lists
+            html = html.replace(/<\/li>\s*<li>/g, '\n');
+            html = html.replace(/<li>(.*?)<\/li>/g, function(match, p1) {
+                return '<li>' + p1.trim() + '</li>';
+            });
+
+            return html;
+        }
+
+        // Update active file in the tree
+        function updateActiveFile(filePath) {
+            // Remove active class from all links
+            document.querySelectorAll('.file-tree a').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Add active class to current file
+            const activeLink = document.querySelector(`.file-tree a[data-path="${encodeURIComponent(filePath)}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+                
+                // Expand parent directories
+                let parentDir = activeLink.closest('ul').parentElement;
+                while (parentDir && parentDir.classList.contains('directory')) {
+                    parentDir.classList.add('expanded');
+                    parentDir = parentDir.closest('ul')?.parentElement;
+                }
+            }
+        }
+
+        // Search functionality
+        function filterFiles(query) {
+            const normalizedQuery = query.toLowerCase();
+            
+            function filterItems(items) {
+                return items.filter(item => {
+                    if (item.type === 'file') {
+                        return item.name.toLowerCase().includes(normalizedQuery);
+                    } else if (item.type === 'directory') {
+                        const filteredChildren = filterItems(item.children || []);
+                        if (filteredChildren.length > 0) {
+                            item.filteredChildren = filteredChildren;
+                            return true;
+                        }
+                        return item.name.toLowerCase().includes(normalizedQuery);
+                    }
+                    return false;
+                });
+            }
+
+            
+            if (query.trim() === '') {
+                renderFileTree(files);
+            } else {
+                const filtered = filterItems(JSON.parse(JSON.stringify(files)));
+                renderFileTree(filtered);
+                
+                // Expand all directories in search results
+                document.querySelectorAll('.directory').forEach(dir => {
+                    if (dir.querySelector('.children li')) {
+                        dir.classList.add('expanded');
+                    }
+                });
+            }
+        }
+
+
+        // Load files from static JSON
+        async function loadFiles() {
+            try {
+                // First try to load from file_list.json
+                const response = await fetch('file_list.json');
+                if (!response.ok) throw new Error('Failed to load file list');
+                
+                files = await response.json();
+                renderFileTree(files);
+                
+                // Check URL for file parameter
+                const urlParams = new URLSearchParams(window.location.search);
+                const fileParam = urlParams.get('file');
+                
+                if (fileParam) {
+                    loadMarkdownFile(decodeURIComponent(fileParam));
+                }
+            } catch (error) {
+                console.error('Error loading files:', error);
+                // Fallback to empty file list if JSON can't be loaded
+                files = [];
+                renderFileTree(files);
+                
+                contentDiv.innerHTML = `
+                    <h1>Note</h1>
+                    <p>File list could not be loaded. Some features may be limited.</p>
+                `;
+            }
+        }
+
+        // Event listeners
+        searchInput.addEventListener('input', (e) => {
+            filterFiles(e.target.value);
+        });
+
+        // Handle browser back/forward
+        window.addEventListener('popstate', (event) => {
+            if (event.state && event.state.filePath) {
+                loadMarkdownFile(event.state.filePath);
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFiles();
+        });
+    </script>
+</body>
+</html>

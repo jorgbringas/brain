@@ -299,8 +299,12 @@
         async function loadMarkdownFile(filePath) {
             try {
                 currentFile = filePath;
-                const response = await fetch(`/Content/${filePath}`);
-                if (!response.ok) throw new Error('File not found');
+                // Ensure we're using the correct path for fetching
+                const response = await fetch(`Content/${filePath}`);
+                if (!response.ok) {
+                    console.error(`Failed to fetch file: ${response.status} ${response.statusText}`);
+                    throw new Error('File not found');
+                }
                 
                 const markdown = await response.text();
                 const html = await markdownToHtml(markdown);
@@ -311,11 +315,15 @@
                 // Update URL
                 history.pushState({ filePath }, '', `?file=${encodeURIComponent(filePath)}`);
                 
+                // Scroll to top
+                window.scrollTo(0, 0);
+                
             } catch (error) {
                 console.error('Error loading file:', error);
                 contentDiv.innerHTML = `
                     <h1>Error</h1>
                     <p>Could not load the requested file: ${error.message}</p>
+                    <p>Path: Content/${filePath}</p>
                 `;
             }
         }

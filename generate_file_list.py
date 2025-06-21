@@ -15,24 +15,29 @@ def list_markdown_files(directory='Content', base_path=''):
             print(f"Warning: Directory not found: {current_dir}")
             return files
             
-        # Sort directories first, then files
-        items = sorted(os.listdir(current_dir), key=lambda x: (not os.path.isdir(os.path.join(current_dir, x)), x))
+        # Sort directories first, then files, case-insensitive
+        items = sorted(os.listdir(current_dir), 
+                     key=lambda x: (not os.path.isdir(os.path.join(current_dir, x)), x.lower()))
         
         for item in items:
+            # Skip hidden files and directories (like .DS_Store)
+            if item.startswith('.'):
+                continue
+                
             item_path = os.path.join(base_path, item) if base_path else item
             full_path = os.path.join(directory, item_path)
             
             if os.path.isdir(full_path):
-                # Skip directories that end with '_files' as they likely contain assets
+                # Include all directories except those that end with '_files'
                 if not item.endswith('_files'):
                     children = list_markdown_files(directory, item_path)
-                    if children:  # Only add directory if it has markdown files
-                        files.append({
-                            'name': ' '.join(word.capitalize() for word in item.replace('_', ' ').replace('-', ' ').split()),
-                            'path': item_path.replace('\\', '/'),  # Use forward slashes for web
-                            'type': 'directory',
-                            'children': children
-                        })
+                    # Include directory even if empty
+                    files.append({
+                        'name': ' '.join(word.capitalize() for word in item.replace('_', ' ').replace('-', ' ').split()),
+                        'path': item_path.replace('\\', '/'),  # Use forward slashes for web
+                        'type': 'directory',
+                        'children': children
+                    })
             elif item.lower().endswith('.md'):
                 files.append({
                     'name': ' '.join(word.capitalize() for word in os.path.splitext(item)[0].replace('_', ' ').replace('-', ' ').split()),

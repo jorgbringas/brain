@@ -21,10 +21,14 @@ ENV/
 Thumbs.db
 
 # Project specific
-file_list.json
+# Keep file_list.json as it's needed for the static site
 
 # Local development
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Include all markdown files
+!*.md
+!**/*.md

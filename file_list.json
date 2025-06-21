@@ -1,0 +1,111 @@
+[
+  {
+    "name": "0 0 Assessment",
+    "path": "0_0-Assessment",
+    "type": "directory",
+    "children": [
+      {
+        "name": "Archetypes",
+        "path": "0_0-Assessment/Archetypes.md",
+        "type": "file"
+      },
+      {
+        "name": "Fury",
+        "path": "0_0-Assessment/fury.md",
+        "type": "file"
+      },
+      {
+        "name": "Karp",
+        "path": "0_0-Assessment/karp.md",
+        "type": "file"
+      },
+      {
+        "name": "Sprout",
+        "path": "0_0-Assessment/sprout.md",
+        "type": "file"
+      },
+      {
+        "name": "Test Archetypes",
+        "path": "0_0-Assessment/test_archetypes.md",
+        "type": "file"
+      },
+      {
+        "name": "Trooper",
+        "path": "0_0-Assessment/trooper.md",
+        "type": "file"
+      },
+      {
+        "name": "Unchained",
+        "path": "0_0-Assessment/unchained.md",
+        "type": "file"
+      }
+    ]
+  },
+  {
+    "name": "Curriculum",
+    "path": "Curriculum",
+    "type": "directory",
+    "children": [
+      {
+        "name": "Intro",
+        "path": "Curriculum/intro.md",
+        "type": "file"
+      },
+      {
+        "name": "Module 0 Rapid Start",
+        "path": "Curriculum/module-0_Rapid-Start.md",
+        "type": "file"
+      },
+      {
+        "name": "Module 1 Fundamentals 1",
+        "path": "Curriculum/module-1_Fundamentals-1.md",
+        "type": "file"
+      },
+      {
+        "name": "Module 1 Plan 30days",
+        "path": "Curriculum/module-1_Plan-30days.md",
+        "type": "file"
+      },
+      {
+        "name": "Module 3 Briefing",
+        "path": "Curriculum/Module-3_Briefing.md",
+        "type": "file"
+      },
+      {
+        "name": "Module 4 Technique Training",
+        "path": "Curriculum/module-4_Technique-Training.md",
+        "type": "file"
+      }
+    ]
+  },
+  {
+    "name": "0 Rapid Start",
+    "path": "0_Rapid-Start.md",
+    "type": "file"
+  },
+  {
+    "name": "1 Fundamentals 1",
+    "path": "1_Fundamentals-1.md",
+    "type": "file"
+  },
+  {
+    "name": "1 To Do 30 Day",
+    "path": "1_To-do_30_day.md",
+    "type": "file"
+  },
+  {
+    "name": "2 Fundamentals 2",
+    "path": "2_Fundamentals-2.md",
+    "type": "file"
+  },
+  {
+    "name": "3 Briefing",
+    "path": "3_Briefing.md",
+    "type": "file"
+  },
+  {
+    "name": "4 Technique Training",
+    "path": "4_Technique-Training.md",
+    "type": "file"
+  }
+]
